@@ -6,10 +6,8 @@ from pyngrok import ngrok
 import cv2
 from tensorflow import keras
 from img_classification import teachable_machine_classification
-import keys.keys as keys
-
 import tensorflow as tf
-  
+
 physical_devices = tf.config.list_physical_devices('GPU')
 tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
