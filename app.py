@@ -1,10 +1,17 @@
 import pandas as pd
 import numpy as np
 import streamlit as st
-from PIL import Image
+from PIL import Image, ImageOps
 from pyngrok import ngrok
 import cv2
+from tensorflow import keras
+from img_classification import teachable_machine_classification
+
 import tensorflow as tf
+  
+physical_devices = tf.config.list_physical_devices('GPU')
+tf.config.experimental.set_memory_growth(physical_devices[0], True)
+
 def predictImage():
     pass
 
@@ -14,7 +21,7 @@ st.sidebar.info('''Rice is the most popular staple in the world. It is a crucial
 These diseases can cause sickness to humans when eaten. While these disease are quite hard to diagnose, HealthRice
 is here to help! HealthRice utilizes the power of machine learning in order to diagnose BrownSpot and Hispa. Of course,
 HealthRice can also diagnose healthy rice too.''')
-st.sidebar.image('assets\Buford-FrenchRice.jpg')
+st.sidebar.image('assets\display\Buford-FrenchRice.jpg')
 
 st.sidebar.text('')
 st.sidebar.title('How to use')
@@ -25,23 +32,21 @@ st.sidebar.info('''
 
 st.title('HealthRice')
 
-upload = st.file_uploader('Upload a CT scan image', type=['png', 'jpg'])
+st.image('assets\display\IMG_20190419_170439.jpg', caption='Here is what a healthy rice leaf looks like!', width=200,)
+st.image('assets\display\IMG_2993.jpg', caption='Here is what a rice leaf with BrownSpot looks like!', width=200)
+st.image('assets\display\IMG_20190419_094254.jpg', caption='This is what a rice leaf with Hispa looks like!', width=200)
 
-if upload is not None:
-  file_bytes = np.asarray(bytearray(upload.read()), dtype=np.uint8)
-  opencv_image = cv2.imdecode(file_bytes, 1)
-  opencv_image = cv2.cvtColor(opencv_image,cv2.COLOR_BGR2RGB) # Color from BGR to RGB
-  img = Image.open(upload)
-  st.image(img,caption='Uploaded Image',width=300)
-  if(st.button('Predict')):
-    model = tf.keras.models.load_model(model_path)
-    x = cv2.resize(opencv_image,(100,100))
-    x = np.expand_dims(x,axis=0)    
-    y = model.predict(x)
-    ans=np.argmax(y,axis=1)
-    if(ans==0):
-      st.title('COVID')
-    elif(ans==1):
-      st.title('Healthy')
-    else:
-      st.title('Other Pulmonary Disorder')
+st.write('')
+uploaded_file = st.file_uploader('Upload an image of rice leaves!', type=['png', 'jpg'])
+
+if uploaded_file is not None:
+      image = Image.open(uploaded_file)
+      st.image(image, caption='Uploaded Rice Leaf Photo.', use_column_width=True)
+      st.write("")
+      label = teachable_machine_classification(image, 'keras_model.h5')
+      if label == 0:
+          st.write("The inputted rice leaf appears to have Brownspot. It is not recommendeed to sell this to the public.")
+      elif label == 1:
+          st.write("Congratulations! The inputted rice leaf is healthy!")
+      else: 
+        st.write('The inputted rice leaf unfortunately has Hispa. It is not recommended to sell this to the public. ')
