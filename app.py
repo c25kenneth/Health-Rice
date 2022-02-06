@@ -64,7 +64,7 @@ if uploaded_file is not None:
           if (phoneNumber is not None):
             message = client.messages.create(
                 body='Your leaf appears to have BrowSpot!',
-                from_ = '+19362463603', 
+                from_ = '*********', 
                 to=phoneNumber
             )
             print(message.body)
@@ -73,7 +73,7 @@ if uploaded_file is not None:
           if (phoneNumber is not None):
             message = client.messages.create(
                 body='Congrats! Your leaf is healthy!',
-                from_ = '+19362463603', 
+                from_ = '*********', 
                 to=phoneNumber
             )
             print(message.body)
@@ -82,7 +82,7 @@ if uploaded_file is not None:
         if phoneNumber is not None:
             message = client.messages.create(
                 body = 'The inputted rice leaf unfortunately appears to have Hispa', 
-                from_ = '+19362463603',
+                from_ = '*********',
                 to = phoneNumber
             )
             print(message.body)
