@@ -2,7 +2,7 @@ from tensorflow import keras
 import numpy as np
 from PIL import Image, ImageOps
 
-def teachable_machine_classification(img, weights_file):
+def machine_classification(img, weights_file):
     model = keras.models.load_model(weights_file)
     data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
     image = img

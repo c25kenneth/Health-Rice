@@ -1,3 +1,4 @@
+from lib2to3.pgen2 import token
 import pandas as pd
 import numpy as np
 import streamlit as st
@@ -5,8 +6,9 @@ from PIL import Image, ImageOps
 from pyngrok import ngrok
 import cv2
 from tensorflow import keras
-from img_classification import teachable_machine_classification
+from img_classification import machine_classification
 import tensorflow as tf
+
 
 physical_devices = tf.config.list_physical_devices('GPU')
 tf.config.experimental.set_memory_growth(physical_devices[0], True)
@@ -26,7 +28,8 @@ st.sidebar.text('')
 st.sidebar.title('How to use')
 st.sidebar.info('''
     HealthRice is extremely easy to use! Simply hit the "Browse files" button and select your picture! 
-    Once your image is uploaded, HealthRice will automatically diagnose the leaf for you!
+    Once your image is uploaded, HealthRice will automatically diagnose the leaf for you! Additionally, if you 
+    would like to be further reminded through an SMS, all you have to do is input your phone number above the "Browse files" button!
 ''')
 
 st.title('HealthRice')
@@ -36,13 +39,18 @@ st.image('assets\display\IMG_2993.jpg', caption='Here is what a rice leaf with B
 st.image('assets\display\IMG_20190419_094254.jpg', caption='This is what a rice leaf with Hispa looks like!', width=200)
 
 st.write('')
+st.write('')
+st.write('')
+
+phoneNumber = st.text_input(label='Enter in your phone number to be reminded of your leaves!'),
+
 uploaded_file = st.file_uploader('Upload an image of rice leaves!', type=['png', 'jpg'])
 
 if uploaded_file is not None:
       image = Image.open(uploaded_file)
       st.image(image, caption='Uploaded Rice Leaf Photo.', use_column_width=True)
       st.write("")
-      label = teachable_machine_classification(image, 'keras_model.h5')
+      label = machine_classification(image, 'keras_model.h5')
       if label == 0:
           st.write("The inputted rice leaf appears to have Brownspot. It is not recommendeed to sell this to the public.")
       elif label == 1:
