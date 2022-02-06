@@ -6,6 +6,7 @@ from pyngrok import ngrok
 import cv2
 from tensorflow import keras
 from img_classification import teachable_machine_classification
+import keys.keys as keys
 
 import tensorflow as tf
   
@@ -26,8 +27,8 @@ st.sidebar.image('assets\display\Buford-FrenchRice.jpg')
 st.sidebar.text('')
 st.sidebar.title('How to use')
 st.sidebar.info('''
-    HealthRice is extremely easy to use! Simply hit the "Upload Image" button and select your picture
-    of rice! Once your image is uploaded, simply hit 'Diagnose' and wait for your results to show!
+    HealthRice is extremely easy to use! Simply hit the "Browse files" button and select your picture! 
+    Once your image is uploaded, HealthRice will automatically diagnose the leaf for you!
 ''')
 
 st.title('HealthRice')
