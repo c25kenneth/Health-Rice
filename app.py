@@ -63,7 +63,7 @@ if uploaded_file is not None:
           st.write("The inputted rice leaf appears to have Brownspot. It is not recommendeed to sell this to the public.")
           if (phoneNumber is not None):
             message = client.messages.create(
-                body='Your leaf appears to have BrowSpot!',
+                body='Your leaf appears to have BrownSpot!',
                 from_ = '*********', 
                 to=phoneNumber
             )
